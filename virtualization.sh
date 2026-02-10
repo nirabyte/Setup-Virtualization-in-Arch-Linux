@@ -1,26 +1,21 @@
-#!/bin/sh -e
+#!/bin/bash
 
-# Color definitions
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 RC='\033[0m'
 
-# Check if command exists
 command_exists() {
     command -v "$1" > /dev/null 2>&1
 }
 
-# Check environment and set up color variables
 checkEnv() {
-    # Verify script is running with proper shell
     if [ -z "$SHELL" ]; then
         printf "%b\n" "${RED}SHELL environment variable not set.${RC}"
         exit 1
     fi
 }
 
-# Check and set up escalation tool (sudo or doas)
 checkEscalationTool() {
     if command_exists sudo; then
         ESCALATION_TOOL="sudo"
@@ -31,7 +26,6 @@ checkEscalationTool() {
         exit 1
     fi
 
-    # Detect package manager
     if command_exists pacman; then
         PACKAGER="pacman"
     elif command_exists apt; then
@@ -156,8 +150,6 @@ main() {
 
     printf "%b\n" "${GREEN}Installation complete!${RC}"
 }
-
-# Main execution
 checkEnv
 checkEscalationTool
 main
